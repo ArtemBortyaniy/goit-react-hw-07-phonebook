@@ -14,7 +14,6 @@ export const FormEdit = ({ id, name, phone, onClose }) => {
         phone: form.elements.phone.value,
       })
     );
-    form.reset();
     onClose();
   };
 

@@ -53,7 +53,7 @@ const contactsSlise = createSlice({
       state.isLoading = false;
       state.error = null;
       state.items = state.items.map(item => {
-        return item.id === action.payload.contactId
+        return item.id === action.payload.id
           ? { ...item, name: action.payload.name, phone: action.payload.phone }
           : item;
       });
