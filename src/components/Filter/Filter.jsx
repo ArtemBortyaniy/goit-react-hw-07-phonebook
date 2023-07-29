@@ -1,13 +1,12 @@
 import css from './Filter.module.css';
 import { useDispatch } from 'react-redux';
-import { setStatusFilter } from 'redux/features/filtersSlice/filtersSlice';
+import { setStatusFilter } from 'redux/features/filterSlice';
 
 export const Filter = () => {
   const dispatch = useDispatch();
 
-  const setFilter = e => {
-    const newFilter = e.target.value;
-    dispatch(setStatusFilter(newFilter));
+  const handleChangeFilter = e => {
+    dispatch(setStatusFilter(e.target.value));
   };
 
   return (
@@ -19,7 +18,7 @@ export const Filter = () => {
           name="filter"
           required
           className={css.input}
-          onChange={setFilter}
+          onChange={handleChangeFilter}
         />
       </label>
     </div>

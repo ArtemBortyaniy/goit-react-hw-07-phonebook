@@ -1,34 +1,40 @@
+import { useEffect } from 'react';
 import css from './ContactsList.module.css';
-import { getPhonebook } from 'redux/selectors';
-import { getFilter } from 'redux/selectors';
-import { useSelector } from 'react-redux/es/hooks/useSelector';
-import { deletePhone } from 'redux/features/phonebookSlice/phonebookSlice';
 import { useDispatch } from 'react-redux';
+import { getContacts, deleteContacts } from 'redux/operations';
+import { useSelector } from 'react-redux';
+import { selectContacts, selectFilters } from 'redux/selectors';
 
 export const ContactList = () => {
   const dispatch = useDispatch();
-  const phonebooks = useSelector(getPhonebook);
-  const filter = useSelector(getFilter);
+  const contacts = useSelector(selectContacts);
+  const filters = useSelector(selectFilters);
 
-  const handleFilter = () => {
-    return phonebooks.filter(({ name }) =>
-      name.toLowerCase().includes(filter.toLowerCase())
-    );
+  const visibleContacts = () => {
+    return contacts.filter(contact => contact.name.includes(filters));
   };
+
+  const handleDelete = id => {
+    return dispatch(deleteContacts(id));
+  };
+
+  useEffect(() => {
+    dispatch(getContacts());
+  }, [dispatch]);
 
   return (
     <div className={css.container}>
       <ul className={css.list}>
-        {handleFilter().map(({ id, name, number }) => {
+        {visibleContacts().map(({ id, name, phone }) => {
           return (
             <li key={id} className={css.item}>
               <p>
-                {name}: {number}
+                {name}: {phone}
               </p>
               <button
                 type="button"
                 className={css.buttonDelete}
-                onClick={() => dispatch(deletePhone(id))}
+                onClick={() => handleDelete(id)}
               >
                 Delete
               </button>
