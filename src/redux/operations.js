@@ -3,8 +3,8 @@ import axios from 'axios';
 
 axios.defaults.baseURL = 'https://643e7f53c72fda4a0bf83652.mockapi.io';
 
-export const getContacts = createAsyncThunk(
-  'contacts/getContacts',
+export const fethContacts = createAsyncThunk(
+  'contacts/fethContacts',
   async (_, thunkAPI) => {
     try {
       const response = await axios.get('/users');
@@ -32,6 +32,22 @@ export const deleteContacts = createAsyncThunk(
   async (id, thunkAPI) => {
     try {
       const response = await axios.delete(`/users/${id}`);
+      return response.data;
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.message);
+    }
+  }
+);
+
+export const editContacts = createAsyncThunk(
+  'contacts/editContacts',
+  async ({ contactId, name, phone }, thunkAPI) => {
+    try {
+      const response = await axios.put(`/users/${contactId}`, {
+        name: name,
+        phone: phone,
+      });
+      console.log({ contactId, name, phone });
       return response.data;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);

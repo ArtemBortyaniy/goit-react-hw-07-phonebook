@@ -1,5 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getContacts, addContacts, deleteContacts } from 'redux/operations';
+import {
+  fethContacts,
+  addContacts,
+  deleteContacts,
+  editContacts,
+} from 'redux/operations';
 
 const handlePendeind = state => {
   state.isLoading = true;
@@ -19,13 +24,13 @@ const contactsSlise = createSlice({
   },
   extraReducers: {
     //get
-    [getContacts.pending]: handlePendeind,
-    [getContacts.fulfilled](state, action) {
+    [fethContacts.pending]: handlePendeind,
+    [fethContacts.fulfilled](state, action) {
       state.isLoading = false;
       state.error = null;
       state.items = action.payload;
     },
-    [getContacts.rejected]: handleRejected,
+    [fethContacts.rejected]: handleRejected,
     //post
     [addContacts.pending]: handlePendeind,
     [addContacts.fulfilled](state, action) {
@@ -39,9 +44,21 @@ const contactsSlise = createSlice({
     [deleteContacts.fulfilled](state, action) {
       state.isLoading = false;
       state.error = null;
-      state.items = state.items.filter(item => item.id !== action.payload);
+      state.items = state.items.filter(item => item.id !== action.payload.id);
     },
     [deleteContacts.rejected]: handleRejected,
+    //edit
+    [editContacts.pending]: handlePendeind,
+    [editContacts.fulfilled](state, action) {
+      state.isLoading = false;
+      state.error = null;
+      state.items = state.items.map(item => {
+        return item.id === action.payload.contactId
+          ? { ...item, name: action.payload.name, phone: action.payload.phone }
+          : item;
+      });
+    },
+    [editContacts.rejected]: handleRejected,
   },
 });
 

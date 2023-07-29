@@ -3,7 +3,7 @@ import { Filter } from './Filter/Filter';
 import { Title } from './Title/Title';
 import { ContactList } from './ContactList/ContactList';
 import { useEffect } from 'react';
-import { getContacts } from 'redux/operations';
+import { fethContacts } from 'redux/operations';
 import { useDispatch } from 'react-redux';
 import { selectError, selectIsLoading } from 'redux/selectors';
 import { useSelector } from 'react-redux/es/hooks/useSelector';
@@ -14,7 +14,7 @@ export const App = () => {
   const isLoading = useSelector(selectIsLoading);
 
   useEffect(() => {
-    dispatch(getContacts());
+    dispatch(fethContacts());
   }, [dispatch]);
 
   return (
